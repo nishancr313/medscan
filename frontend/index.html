@@ -22,8 +22,6 @@
   }
   * { margin:0; padding:0; box-sizing:border-box; }
   body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
-
-  /* ── UTILS ── */
   .hidden { display:none !important; }
   input, select, textarea {
     width:100%; padding:12px 14px; border:1.5px solid var(--border); border-radius:10px;
@@ -50,179 +48,87 @@
   .info { background:#e8f5f3; color:var(--teal); border-radius:8px; padding:10px 14px; font-size:13px; margin-bottom:14px; }
   .link { color:var(--teal-mid); cursor:pointer; font-weight:500; font-size:14px; }
   .link:hover { text-decoration:underline; }
-
-  /* ── LOGO ── */
   .logo { display:flex; align-items:center; gap:10px; margin-bottom:28px; }
-  .logo-icon {
-    width:38px; height:38px; background:var(--teal); border-radius:10px;
-    display:flex; align-items:center; justify-content:center; flex-shrink:0;
-  }
+  .logo-icon { width:38px; height:38px; background:var(--teal); border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
   .logo-icon svg { width:20px; height:20px; fill:white; }
   .logo-name { font-family:'DM Serif Display',serif; font-size:22px; color:var(--teal); }
-
-  /* ── AUTH ── */
-  .auth-wrap {
-    min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px;
-    background:radial-gradient(ellipse at 70% 30%, #c8ede8 0%, #f7f4ef 60%);
-  }
-  .auth-card {
-    background:var(--card); border-radius:24px; padding:44px 40px;
-    box-shadow:var(--shadow); width:100%; max-width:440px;
-    animation:fadeUp .45s ease;
-  }
+  .auth-wrap { min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px; background:radial-gradient(ellipse at 70% 30%, #c8ede8 0%, #f7f4ef 60%); }
+  .auth-card { background:var(--card); border-radius:24px; padding:44px 40px; box-shadow:var(--shadow); width:100%; max-width:440px; animation:fadeUp .45s ease; }
   @keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
   .auth-card h2 { font-family:'DM Serif Display',serif; font-size:26px; margin-bottom:6px; }
   .auth-card .sub { color:var(--muted); font-size:14px; margin-bottom:26px; }
   .auth-footer { text-align:center; margin-top:18px; font-size:14px; color:var(--muted); }
-
-  /* ── STEPPER ── */
   .step-bar { display:flex; gap:6px; margin-bottom:28px; }
   .step-dot { height:4px; border-radius:2px; flex:1; background:var(--border); transition:background .3s; }
   .step-dot.active { background:var(--teal); }
   .reg-step { display:none; }
   .reg-step.show { display:block; animation:fadeUp .3s ease; }
-
-  /* ── MED BLOCKS ── */
-  .med-block {
-    background:var(--teal-light); border-radius:12px; padding:16px;
-    margin-bottom:14px; position:relative;
-  }
+  .med-block { background:var(--teal-light); border-radius:12px; padding:16px; margin-bottom:14px; position:relative; }
   .med-block label { color:var(--teal); }
   .med-block input, .med-block select { margin-bottom:10px; }
   .remove-med { position:absolute; top:10px; right:12px; background:none; border:none; color:var(--red); cursor:pointer; font-size:18px; line-height:1; }
-  .add-med {
-    background:none; border:2px dashed var(--teal-mid); color:var(--teal);
-    width:100%; padding:10px; border-radius:10px; cursor:pointer;
-    font-family:'DM Sans',sans-serif; font-weight:600; font-size:14px;
-    margin-bottom:14px; transition:.2s;
-  }
+  .add-med { background:none; border:2px dashed var(--teal-mid); color:var(--teal); width:100%; padding:10px; border-radius:10px; cursor:pointer; font-family:'DM Sans',sans-serif; font-weight:600; font-size:14px; margin-bottom:14px; transition:.2s; }
   .add-med:hover { background:var(--teal-light); }
   .timing-row { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:4px; }
-  .timing-chip {
-    padding:6px 12px; border-radius:20px; border:1.5px solid var(--border);
-    background:#fff; cursor:pointer; font-size:13px; font-weight:500;
-    transition:.15s; user-select:none;
-  }
+  .timing-chip { padding:6px 12px; border-radius:20px; border:1.5px solid var(--border); background:#fff; cursor:pointer; font-size:13px; font-weight:500; transition:.15s; user-select:none; }
   .timing-chip.sel { background:var(--teal); color:#fff; border-color:var(--teal); }
-
-  /* ── TOPBAR ── */
-  .topbar {
-    background:var(--card); padding:14px 24px; display:flex; align-items:center;
-    justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,.06);
-    position:sticky; top:0; z-index:10;
-  }
+  .topbar { background:var(--card); padding:14px 24px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,.06); position:sticky; top:0; z-index:10; }
   .topbar .logo { margin:0; }
   .topbar-right { display:flex; align-items:center; gap:14px; }
-  .avatar {
-    width:36px; height:36px; border-radius:50%; background:var(--teal);
-    color:#fff; display:flex; align-items:center; justify-content:center;
-    font-weight:700; font-size:14px; flex-shrink:0;
-  }
+  .avatar { width:36px; height:36px; border-radius:50%; background:var(--teal); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px; flex-shrink:0; }
   .logout-btn { background:none; border:none; color:var(--muted); cursor:pointer; font-size:13px; font-weight:600; font-family:'DM Sans',sans-serif; }
   .logout-btn:hover { color:var(--red); }
-
-  /* ── MAIN ── */
   .main { max-width:920px; margin:0 auto; padding:28px 20px 48px; }
-
-  /* ── WELCOME ── */
-  .welcome-card {
-    background:linear-gradient(135deg,var(--teal) 0%,#2fa898 100%);
-    border-radius:20px; padding:28px 32px; color:#fff;
-    margin-bottom:24px; position:relative; overflow:hidden;
-  }
-  .welcome-card::after {
-    content:''; position:absolute; right:-30px; top:-30px;
-    width:160px; height:160px; border-radius:50%; background:rgba(255,255,255,.08);
-  }
+  .welcome-card { background:linear-gradient(135deg,var(--teal) 0%,#2fa898 100%); border-radius:20px; padding:28px 32px; color:#fff; margin-bottom:24px; position:relative; overflow:hidden; }
+  .welcome-card::after { content:''; position:absolute; right:-30px; top:-30px; width:160px; height:160px; border-radius:50%; background:rgba(255,255,255,.08); }
   .welcome-card h1 { font-family:'DM Serif Display',serif; font-size:26px; margin-bottom:4px; }
   .welcome-card p { opacity:.85; font-size:15px; margin-bottom:16px; }
-  .date-badge {
-    display:inline-flex; align-items:center; gap:6px;
-    background:rgba(255,255,255,.2); padding:6px 14px;
-    border-radius:20px; font-size:13px; font-weight:600;
-  }
-
-  /* ── STATS ── */
+  .date-badge { display:inline-flex; align-items:center; gap:6px; background:rgba(255,255,255,.2); padding:6px 14px; border-radius:20px; font-size:13px; font-weight:600; }
   .stats { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:24px; }
   .stat-card { background:var(--card); border-radius:16px; padding:20px; box-shadow:var(--shadow); }
   .stat-label { font-size:12px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; margin-bottom:8px; }
   .stat-val { font-family:'DM Serif Display',serif; font-size:30px; color:var(--text); line-height:1.1; }
   .stat-sub { font-size:12px; color:var(--muted); margin-top:3px; }
-
-  /* ── SECTION ── */
   .section-title { font-family:'DM Serif Display',serif; font-size:20px; color:var(--text); margin-bottom:14px; }
-
-  /* ── MED CARDS ── */
   .med-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:14px; margin-bottom:28px; }
   .med-card { background:var(--card); border-radius:16px; padding:18px; box-shadow:var(--shadow); }
   .med-name { font-weight:700; font-size:15px; margin-bottom:4px; }
   .med-timing-tag { font-size:12px; color:var(--muted); margin-bottom:12px; }
   .pill-row { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px; }
-  .pill {
-    width:30px; height:30px; border-radius:50%; border:2px solid var(--border);
-    background:#fff; display:flex; align-items:center; justify-content:center;
-    cursor:pointer; transition:all .15s; font-size:13px; user-select:none;
-  }
+  .pill { width:30px; height:30px; border-radius:50%; border:2px solid var(--border); background:#fff; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:all .15s; font-size:13px; user-select:none; }
   .pill.taken { background:var(--green); border-color:var(--green); color:#fff; }
   .pill-count { font-size:12px; color:var(--muted); margin-bottom:6px; }
   .med-progress { height:6px; background:var(--border); border-radius:3px; overflow:hidden; }
   .med-progress-fill { height:100%; background:var(--green); border-radius:3px; transition:width .5s; }
-
-  /* ── CALENDAR ── */
   .calendar-card { background:var(--card); border-radius:16px; padding:22px; box-shadow:var(--shadow); margin-bottom:24px; }
   .cal-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
   .cal-nav { background:none; border:none; color:var(--teal); cursor:pointer; font-size:20px; padding:4px 8px; border-radius:6px; transition:.15s; }
   .cal-nav:hover { background:var(--teal-light); }
   .cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:4px; }
   .cal-day-label { text-align:center; font-size:11px; font-weight:700; color:var(--muted); padding-bottom:6px; text-transform:uppercase; }
-  .cal-day {
-    aspect-ratio:1; border-radius:8px; display:flex; align-items:center;
-    justify-content:center; font-size:12px; font-weight:500;
-  }
+  .cal-day { aspect-ratio:1; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:500; }
   .cal-day.empty { pointer-events:none; }
   .cal-day.taken { background:var(--green); color:#fff; }
   .cal-day.missed { background:#ffeaea; color:var(--red); font-weight:700; }
   .cal-day.future { color:var(--muted); background:#f5f5f5; }
   .cal-day.today-ring { outline:2.5px solid var(--teal); outline-offset:1px; border-radius:8px; }
   .cal-day.no-data { background:var(--border); color:var(--muted); }
-
-  /* ── MISSED ── */
   .missed-list { background:var(--card); border-radius:16px; padding:22px; box-shadow:var(--shadow); margin-bottom:24px; }
   .missed-item { display:flex; align-items:flex-start; gap:12px; padding:10px 0; border-bottom:1px solid var(--border); }
   .missed-item:last-child { border:none; padding-bottom:0; }
   .missed-dot { width:8px; height:8px; border-radius:50%; background:var(--red); flex-shrink:0; margin-top:5px; }
   .missed-text { font-size:14px; color:var(--text); }
   .missed-date { font-size:12px; color:var(--muted); margin-top:2px; }
-
-  /* ── DISCIPLINE ── */
   .disc-card { background:var(--card); border-radius:16px; padding:22px; box-shadow:var(--shadow); margin-bottom:24px; }
   .disc-bar-wrap { background:var(--border); border-radius:10px; height:14px; margin:12px 0 6px; overflow:hidden; }
   .disc-bar { height:100%; border-radius:10px; transition:width .8s ease; }
   .disc-feedback { background:var(--teal-light); border-radius:10px; padding:14px; font-size:14px; color:var(--teal); line-height:1.6; margin-top:10px; }
-
-  /* ── RESET / SPINNER ── */
-  .reset-btn {
-    background:#fff; border:2px solid var(--red); color:var(--red);
-    border-radius:12px; padding:12px 28px; font-family:'DM Sans',sans-serif;
-    font-weight:600; font-size:15px; cursor:pointer; transition:.2s;
-  }
+  .reset-btn { background:#fff; border:2px solid var(--red); color:var(--red); border-radius:12px; padding:12px 28px; font-family:'DM Sans',sans-serif; font-weight:600; font-size:15px; cursor:pointer; transition:.2s; }
   .reset-btn:hover { background:#ffeaea; }
-  .spinner {
-    width:18px; height:18px; border:2.5px solid rgba(255,255,255,.4);
-    border-top-color:#fff; border-radius:50%; animation:spin .7s linear infinite;
-    display:inline-block; vertical-align:middle; margin-right:6px;
-  }
+  .spinner { width:18px; height:18px; border:2.5px solid rgba(255,255,255,.4); border-top-color:#fff; border-radius:50%; animation:spin .7s linear infinite; display:inline-block; vertical-align:middle; margin-right:6px; }
   @keyframes spin { to { transform:rotate(360deg); } }
-
-  /* ── TOAST ── */
-  #toast {
-    position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(80px);
-    background:var(--text); color:#fff; padding:12px 22px; border-radius:30px;
-    font-size:14px; font-weight:500; transition:transform .3s ease; z-index:999; white-space:nowrap;
-  }
+  #toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(80px); background:var(--text); color:#fff; padding:12px 22px; border-radius:30px; font-size:14px; font-weight:500; transition:transform .3s ease; z-index:999; white-space:nowrap; }
   #toast.show { transform:translateX(-50%) translateY(0); }
-
-  /* ── RESPONSIVE ── */
   @media(max-width:600px){
     .stats { grid-template-columns:repeat(2,1fr); }
     .auth-card { padding:28px 20px; }
@@ -235,20 +141,13 @@
 </head>
 <body>
 
-<!-- ════════════════════════════════════════
-     API BASE — change this after deploying
-     ════════════════════════════════════════ -->
 <script>
-  const API = 'http://localhost:5000';
+  const API = "https://medscan-wfuv.onrender.com";
 </script>
 
-<!-- ══════════ TOAST ══════════ -->
 <div id="toast"></div>
 
-<!-- ══════════ AUTH SECTION ══════════ -->
 <div id="authSection">
-
-  <!-- LOGIN -->
   <div id="loginWrap" class="auth-wrap">
     <div class="auth-card">
       <div class="logo">
@@ -271,7 +170,6 @@
     </div>
   </div>
 
-  <!-- FORGOT PASSWORD -->
   <div id="forgotWrap" class="auth-wrap hidden">
     <div class="auth-card">
       <div class="logo">
@@ -290,7 +188,6 @@
     </div>
   </div>
 
-  <!-- REGISTER -->
   <div id="regWrap" class="auth-wrap hidden">
     <div class="auth-card">
       <div class="logo">
@@ -299,14 +196,11 @@
       </div>
       <h2>New Patient</h2>
       <p class="sub">Create your MedScan account</p>
-
       <div class="step-bar">
         <div class="step-dot active" id="sd1"></div>
         <div class="step-dot" id="sd2"></div>
         <div class="step-dot" id="sd3"></div>
       </div>
-
-      <!-- Step 1: Account -->
       <div class="reg-step show" id="regStep1">
         <label>Choose Username</label>
         <input id="rUser" type="text" placeholder="username (no spaces)">
@@ -318,8 +212,6 @@
         <button class="btn" onclick="regStep1()">Next →</button>
         <button class="btn-outline" onclick="showSection('loginWrap')">Back to Login</button>
       </div>
-
-      <!-- Step 2: Patient Info -->
       <div class="reg-step" id="regStep2">
         <label>Full Name</label>
         <input id="rName" type="text" placeholder="Patient full name">
@@ -334,8 +226,6 @@
         <div id="reg2err" class="err hidden"></div>
         <button class="btn" onclick="regStep2()">Next →</button>
       </div>
-
-      <!-- Step 3: Medicines -->
       <div class="reg-step" id="regStep3">
         <p style="color:var(--muted);font-size:14px;margin-bottom:14px">Add your prescribed tablets below</p>
         <div id="medList"></div>
@@ -345,13 +235,9 @@
       </div>
     </div>
   </div>
+</div>
 
-</div><!-- end authSection -->
-
-
-<!-- ══════════ MAIN APP ══════════ -->
 <div id="appSection" class="hidden">
-
   <div class="topbar">
     <div class="logo">
       <div class="logo-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15v-4H7l5-8v4h4l-5 8z"/></svg></div>
@@ -362,17 +248,12 @@
       <button class="logout-btn" onclick="doLogout()">Logout</button>
     </div>
   </div>
-
   <div class="main">
-
-    <!-- Welcome Banner -->
     <div class="welcome-card">
       <h1 id="welcomeName">Hello!</h1>
       <p id="welcomeSub">Hope you're doing well today. Here's your health summary 💊</p>
       <div class="date-badge" id="todayBadge">📅 —</div>
     </div>
-
-    <!-- Stats -->
     <div class="stats">
       <div class="stat-card">
         <div class="stat-label">Taken Today</div>
@@ -390,12 +271,8 @@
         <div class="stat-sub">days in a row</div>
       </div>
     </div>
-
-    <!-- Today's Medicines -->
     <div class="section-title">Today's Medicines</div>
     <div class="med-grid" id="medGrid"></div>
-
-    <!-- Calendar -->
     <div class="calendar-card">
       <div class="cal-header">
         <div class="section-title" style="margin:0">Monthly Consistency</div>
@@ -406,53 +283,38 @@
         </div>
       </div>
       <div class="cal-grid" id="calGrid"></div>
-      <!-- Legend -->
       <div style="display:flex;gap:16px;margin-top:14px;flex-wrap:wrap">
         <span style="font-size:12px;color:var(--muted);display:flex;align-items:center;gap:5px"><span style="width:12px;height:12px;border-radius:3px;background:var(--green);display:inline-block"></span>All taken</span>
         <span style="font-size:12px;color:var(--muted);display:flex;align-items:center;gap:5px"><span style="width:12px;height:12px;border-radius:3px;background:#ffeaea;border:1px solid var(--red);display:inline-block"></span>Missed</span>
         <span style="font-size:12px;color:var(--muted);display:flex;align-items:center;gap:5px"><span style="width:12px;height:12px;border-radius:3px;background:var(--border);display:inline-block"></span>No data</span>
       </div>
     </div>
-
-    <!-- Missed Doses -->
     <div class="missed-list">
       <div class="section-title">Missed Doses This Month</div>
       <div id="missedList"></div>
     </div>
-
-    <!-- Discipline -->
     <div class="disc-card">
       <div class="section-title">Discipline Score</div>
-      <div class="disc-bar-wrap">
-        <div class="disc-bar" id="discBar" style="width:0%"></div>
-      </div>
+      <div class="disc-bar-wrap"><div class="disc-bar" id="discBar" style="width:0%"></div></div>
       <div style="text-align:right;font-size:12px;color:var(--muted)" id="discPct">0%</div>
       <div class="disc-feedback" id="discFeedback">Loading…</div>
     </div>
-
-    <!-- Reset -->
     <div style="text-align:center;padding:8px 0 16px">
       <button class="reset-btn" onclick="confirmReset()">🔄 Reset My Dose Data</button>
     </div>
-
   </div>
-</div><!-- end appSection -->
-
+</div>
 
 <script>
-// ═══════════════════════════════════════════════════
-// STATE
-// ═══════════════════════════════════════════════════
+const API = 'https://medscan-wfuv.onrender.com';
+
 let token = localStorage.getItem('ms_token') || null;
-let currentUser = null;   // { name, username, meds, age, phone, guardian, guardianPhone }
-let doseLogs = {};        // { "YYYY-MM-DD": { "0": 2, "1": 1 } }
+let currentUser = null;
+let doseLogs = {};
 let calYear, calMonth;
 let medCount = 0;
 let regData = {};
 
-// ═══════════════════════════════════════════════════
-// HELPERS
-// ═══════════════════════════════════════════════════
 function todayKey() {
   const d = new Date();
   return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
@@ -486,10 +348,7 @@ function setLoading(btnId, loading, text='') {
 }
 
 async function apiFetch(path, method='GET', body=null) {
-  const opts = {
-    method,
-    headers: { 'Content-Type': 'application/json' }
-  };
+  const opts = { method, headers: { 'Content-Type': 'application/json' } };
   if (token) opts.headers['Authorization'] = 'Bearer ' + token;
   if (body) opts.body = JSON.stringify(body);
   const res = await fetch(API + path, opts);
@@ -498,9 +357,6 @@ async function apiFetch(path, method='GET', body=null) {
   return data;
 }
 
-// ═══════════════════════════════════════════════════
-// AUTH
-// ═══════════════════════════════════════════════════
 async function doLogin() {
   hideErr('loginErr');
   const username = document.getElementById('loginUser').value.trim();
@@ -541,9 +397,7 @@ async function doForgot() {
 }
 
 function doLogout() {
-  token = null;
-  currentUser = null;
-  doseLogs = {};
+  token = null; currentUser = null; doseLogs = {};
   localStorage.removeItem('ms_token');
   document.getElementById('appSection').classList.add('hidden');
   document.getElementById('authSection').classList.remove('hidden');
@@ -552,9 +406,6 @@ function doLogout() {
   document.getElementById('loginPass').value = '';
 }
 
-// ═══════════════════════════════════════════════════
-// REGISTRATION STEPS
-// ═══════════════════════════════════════════════════
 function regStep1() {
   hideErr('reg1err');
   const u = document.getElementById('rUser').value.trim();
@@ -602,8 +453,7 @@ function addMedBlock() {
       <span class="timing-chip" onclick="this.classList.toggle('sel')">Morning</span>
       <span class="timing-chip" onclick="this.classList.toggle('sel')">Afternoon</span>
       <span class="timing-chip" onclick="this.classList.toggle('sel')">Night</span>
-    </div>
-  `;
+    </div>`;
   document.getElementById('medList').appendChild(div);
 }
 
@@ -611,8 +461,7 @@ async function doRegister() {
   hideErr('reg3err');
   const blocks = document.querySelectorAll('#medList .med-block');
   if (blocks.length === 0) { showErr('reg3err','Add at least one tablet.'); return; }
-  const meds = [];
-  let valid = true;
+  const meds = []; let valid = true;
   blocks.forEach(b => {
     const name = b.querySelector('.med-name-inp').value.trim();
     const dose = parseInt(b.querySelector('.med-dose-inp').value) || 1;
@@ -628,7 +477,6 @@ async function doRegister() {
     token = data.token;
     localStorage.setItem('ms_token', token);
     currentUser = data.user;
-    // reset form
     medCount = 0; regData = {};
     document.getElementById('medList').innerHTML = '';
     ['regStep1','regStep2','regStep3'].forEach((s,i) => {
@@ -645,61 +493,37 @@ async function doRegister() {
   }
 }
 
-// ═══════════════════════════════════════════════════
-// APP LOAD
-// ═══════════════════════════════════════════════════
 async function loadApp() {
   document.getElementById('authSection').classList.add('hidden');
   document.getElementById('appSection').classList.remove('hidden');
-
-  // Welcome banner
   const firstName = currentUser.name.split(' ')[0];
   document.getElementById('welcomeName').textContent = `Hello, ${firstName}! 👋`;
   document.getElementById('avatarEl').textContent = currentUser.name[0].toUpperCase();
-
   const now = new Date();
   document.getElementById('todayBadge').textContent =
     '📅 ' + now.toLocaleDateString('en-IN', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
-
   calYear = now.getFullYear();
   calMonth = now.getMonth();
-
-  // Load dose logs from server
-  try {
-    doseLogs = await apiFetch('/doses');
-  } catch(e) {
-    doseLogs = {};
-  }
-
+  try { doseLogs = await apiFetch('/doses'); } catch(e) { doseLogs = {}; }
   renderAll();
 }
 
 function renderAll() {
-  renderMeds();
-  renderStats();
-  renderCalendar();
-  renderMissed();
-  renderDiscipline();
+  renderMeds(); renderStats(); renderCalendar(); renderMissed(); renderDiscipline();
 }
 
-// ═══════════════════════════════════════════════════
-// MEDICINE GRID
-// ═══════════════════════════════════════════════════
 function renderMeds() {
   const grid = document.getElementById('medGrid');
   grid.innerHTML = '';
   const tk = todayKey();
   const todayLog = doseLogs[tk] || {};
-
   currentUser.meds.forEach((med, mi) => {
     const taken = todayLog[mi] !== undefined ? todayLog[mi] : 0;
     const pct = Math.round((taken / med.dose) * 100);
-
     const pillsHTML = Array.from({ length: med.dose }, (_, pi) => {
       const isTaken = pi < taken;
-      return `<div class="pill ${isTaken ? 'taken' : ''}" onclick="togglePill(${mi},${pi})" title="${isTaken ? 'Mark as not taken' : 'Mark as taken'}">${isTaken ? '✓' : ''}</div>`;
+      return `<div class="pill ${isTaken ? 'taken' : ''}" onclick="togglePill(${mi},${pi})">${isTaken ? '✓' : ''}</div>`;
     }).join('');
-
     const card = document.createElement('div');
     card.className = 'med-card';
     card.innerHTML = `
@@ -707,10 +531,7 @@ function renderMeds() {
       <div class="med-timing-tag">⏰ ${med.timings.join(' · ')}</div>
       <div class="pill-row">${pillsHTML}</div>
       <div class="pill-count">${taken} / ${med.dose} taken today</div>
-      <div class="med-progress">
-        <div class="med-progress-fill" style="width:${pct}%"></div>
-      </div>
-    `;
+      <div class="med-progress"><div class="med-progress-fill" style="width:${pct}%"></div></div>`;
     grid.appendChild(card);
   });
 }
@@ -721,14 +542,11 @@ async function togglePill(mi, pi) {
   const cur = doseLogs[tk][mi] || 0;
   const med = currentUser.meds[mi];
   let newTaken;
-  if (pi < cur) newTaken = pi;               // clicking a taken pill: reduce to that index
-  else if (cur < med.dose) newTaken = cur + 1; // clicking untaken: add one
+  if (pi < cur) newTaken = pi;
+  else if (cur < med.dose) newTaken = cur + 1;
   else return;
-
   doseLogs[tk][mi] = newTaken;
   renderAll();
-
-  // Sync to server
   try {
     await apiFetch('/dose', 'POST', { date: tk, medIndex: mi, taken: newTaken });
   } catch(e) {
@@ -736,40 +554,25 @@ async function togglePill(mi, pi) {
   }
 }
 
-// ═══════════════════════════════════════════════════
-// STATS
-// ═══════════════════════════════════════════════════
 function renderStats() {
   const now = new Date();
   const tk = todayKey();
   const todayLog = doseLogs[tk] || {};
-
-  // Today
   let totalDose = 0, takenToday = 0;
-  currentUser.meds.forEach((m, mi) => {
-    totalDose += m.dose;
-    takenToday += todayLog[mi] || 0;
-  });
+  currentUser.meds.forEach((m, mi) => { totalDose += m.dose; takenToday += todayLog[mi] || 0; });
   document.getElementById('statToday').textContent = `${takenToday}/${totalDose}`;
-
-  // Month
-  const daysThisMonth = now.getDate();
   let fullDays = 0, countedDays = 0;
-  for (let d = 1; d <= daysThisMonth; d++) {
+  for (let d = 1; d <= now.getDate(); d++) {
     const k = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
     const dl = doseLogs[k] || {};
     const total = currentUser.meds.reduce((s, m) => s + m.dose, 0);
     const taken = currentUser.meds.reduce((s, m, mi) => s + (dl[mi] || 0), 0);
     if (total > 0) { countedDays++; if (taken >= total) fullDays++; }
   }
-  const monthPct = countedDays > 0 ? Math.round((fullDays / countedDays) * 100) : 0;
-  document.getElementById('statMonth').textContent = monthPct + '%';
-
-  // Streak
+  document.getElementById('statMonth').textContent = (countedDays > 0 ? Math.round((fullDays/countedDays)*100) : 0) + '%';
   let streak = 0;
   for (let i = 0; i < 365; i++) {
-    const d = new Date(now);
-    d.setDate(now.getDate() - i);
+    const d = new Date(now); d.setDate(now.getDate() - i);
     const k = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
     const dl = doseLogs[k] || {};
     const total = currentUser.meds.reduce((s, m) => s + m.dose, 0);
@@ -780,9 +583,6 @@ function renderStats() {
   document.getElementById('statStreak').textContent = streak;
 }
 
-// ═══════════════════════════════════════════════════
-// CALENDAR
-// ═══════════════════════════════════════════════════
 function calNav(dir) {
   calMonth += dir;
   if (calMonth > 11) { calMonth = 0; calYear++; }
@@ -794,37 +594,23 @@ function renderCalendar() {
   const now = new Date();
   document.getElementById('calMonthLabel').textContent =
     new Date(calYear, calMonth, 1).toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });
-
   const grid = document.getElementById('calGrid');
   grid.innerHTML = '';
-
   ['Su','Mo','Tu','We','Th','Fr','Sa'].forEach(d => {
-    const el = document.createElement('div');
-    el.className = 'cal-day-label';
-    el.textContent = d;
-    grid.appendChild(el);
+    const el = document.createElement('div'); el.className = 'cal-day-label'; el.textContent = d; grid.appendChild(el);
   });
-
   const firstDay = new Date(calYear, calMonth, 1).getDay();
   const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
-
   for (let i = 0; i < firstDay; i++) {
-    const el = document.createElement('div');
-    el.className = 'cal-day empty';
-    grid.appendChild(el);
+    const el = document.createElement('div'); el.className = 'cal-day empty'; grid.appendChild(el);
   }
-
   for (let d = 1; d <= daysInMonth; d++) {
     const k = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    const el = document.createElement('div');
-    el.textContent = d;
-
+    const el = document.createElement('div'); el.textContent = d;
     const isFuture = new Date(calYear, calMonth, d) > now;
     const isToday = calYear === now.getFullYear() && calMonth === now.getMonth() && d === now.getDate();
-
-    if (isFuture) {
-      el.className = 'cal-day future';
-    } else {
+    if (isFuture) { el.className = 'cal-day future'; }
+    else {
       const dl = doseLogs[k] || {};
       const total = currentUser.meds.reduce((s, m) => s + m.dose, 0);
       const taken = currentUser.meds.reduce((s, m, mi) => s + (dl[mi] || 0), 0);
@@ -837,32 +623,21 @@ function renderCalendar() {
   }
 }
 
-// ═══════════════════════════════════════════════════
-// MISSED DOSES
-// ═══════════════════════════════════════════════════
 function renderMissed() {
   const now = new Date();
   const missed = [];
-
   for (let d = 1; d <= now.getDate(); d++) {
     const k = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
     const dl = doseLogs[k] || {};
     const date = new Date(now.getFullYear(), now.getMonth(), d)
       .toLocaleDateString('en-IN', { day: 'numeric', month: 'short', weekday: 'short' });
-
     currentUser.meds.forEach((m, mi) => {
       const taken = dl[mi] || 0;
-      if (taken < m.dose) {
-        missed.push({ date, med: m.name, taken, total: m.dose });
-      }
+      if (taken < m.dose) missed.push({ date, med: m.name, taken, total: m.dose });
     });
   }
-
   const el = document.getElementById('missedList');
-  if (missed.length === 0) {
-    el.innerHTML = '<p style="color:var(--muted);font-size:14px">No missed doses this month 🎉</p>';
-    return;
-  }
+  if (missed.length === 0) { el.innerHTML = '<p style="color:var(--muted);font-size:14px">No missed doses this month 🎉</p>'; return; }
   el.innerHTML = missed.slice(-10).reverse().map(m => `
     <div class="missed-item">
       <div class="missed-dot"></div>
@@ -873,13 +648,9 @@ function renderMissed() {
     </div>`).join('');
 }
 
-// ═══════════════════════════════════════════════════
-// DISCIPLINE
-// ═══════════════════════════════════════════════════
 function renderDiscipline() {
   const now = new Date();
   let fullDays = 0, totalDays = 0;
-
   for (let d = 1; d <= now.getDate(); d++) {
     const k = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
     const dl = doseLogs[k] || {};
@@ -887,43 +658,26 @@ function renderDiscipline() {
     const taken = currentUser.meds.reduce((s, m, mi) => s + (dl[mi] || 0), 0);
     if (total > 0) { totalDays++; if (taken >= total) fullDays++; }
   }
-
   const pct = totalDays > 0 ? Math.round((fullDays / totalDays) * 100) : 0;
   const bar = document.getElementById('discBar');
   bar.style.width = pct + '%';
   bar.style.background = pct >= 80 ? 'var(--green)' : pct >= 50 ? 'var(--amber)' : 'var(--red)';
   document.getElementById('discPct').textContent = pct + '%';
-
   let fb = '', emoji = '';
-  if (totalDays === 0) {
-    emoji = '💊'; fb = 'No data yet for this month. Start marking your doses today!';
-  } else if (pct === 100) {
-    emoji = '🏆'; fb = "Perfect score! You haven't missed a single dose this month. Outstanding — your body thanks you!";
-  } else if (pct >= 80) {
-    emoji = '🌟'; fb = "Excellent work! You're consistently taking your medication. Keep it up — great habit forming!";
-  } else if (pct >= 60) {
-    emoji = '👍'; fb = "Good consistency! You're on the right track. Try to fill the gaps — one more streak day makes a big difference.";
-  } else if (pct >= 40) {
-    emoji = '⚠️'; fb = "Moderate adherence. Missing doses can reduce your treatment's effectiveness. Set phone reminders to stay on track.";
-  } else {
-    emoji = '🚨'; fb = "Low adherence this month. Skipping medication regularly can be risky. Please consult your guardian or doctor and try to stay consistent.";
-  }
+  if (totalDays === 0) { emoji = '💊'; fb = 'No data yet for this month. Start marking your doses today!'; }
+  else if (pct === 100) { emoji = '🏆'; fb = "Perfect score! You haven't missed a single dose this month. Outstanding — your body thanks you!"; }
+  else if (pct >= 80) { emoji = '🌟'; fb = "Excellent work! You're consistently taking your medication. Keep it up — great habit forming!"; }
+  else if (pct >= 60) { emoji = '👍'; fb = "Good consistency! You're on the right track. Try to fill the gaps — one more streak day makes a big difference."; }
+  else if (pct >= 40) { emoji = '⚠️'; fb = "Moderate adherence. Missing doses can reduce your treatment's effectiveness. Set phone reminders to stay on track."; }
+  else { emoji = '🚨'; fb = "Low adherence this month. Skipping medication regularly can be risky. Please consult your guardian or doctor and try to stay consistent."; }
   document.getElementById('discFeedback').textContent = emoji + ' ' + fb;
 }
 
-// ═══════════════════════════════════════════════════
-// RESET
-// ═══════════════════════════════════════════════════
 async function confirmReset() {
-  const confirmed = confirm('Reset ALL your dose records for every date? This cannot be undone.');
-  if (!confirmed) return;
-  // Delete all logs by setting each to 0 — easiest: just clear locally & server will reflect on next sync
-  // We'll wipe local doseLogs and for each existing entry POST taken=0
-  const keys = Object.keys(doseLogs);
+  if (!confirm('Reset ALL your dose records? This cannot be undone.')) return;
   doseLogs = {};
   renderAll();
-  showToast('Data reset. Syncing with server…');
-  // Re-save each as 0 on server
+  showToast('Resetting data…');
   const today = todayKey();
   currentUser.meds.forEach(async (m, mi) => {
     try { await apiFetch('/dose', 'POST', { date: today, medIndex: mi, taken: 0 }); } catch(e) {}
@@ -931,16 +685,12 @@ async function confirmReset() {
   showToast('✓ All dose data has been reset.');
 }
 
-// ═══════════════════════════════════════════════════
-// INIT — auto-login if token stored
-// ═══════════════════════════════════════════════════
 (async function init() {
   if (!token) return;
   try {
     currentUser = await apiFetch('/profile');
     await loadApp();
   } catch(e) {
-    // Token expired or invalid
     localStorage.removeItem('ms_token');
     token = null;
   }
