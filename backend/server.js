@@ -41,7 +41,8 @@ const userSchema = new mongoose.Schema({
     {
       name: String,
       dose: Number,
-      timings: [String]
+      timings: [String],   // exact times like "08:00", "14:00", "21:00"
+      rfidTag: String      // RFID UID string from ESP32, e.g. "A1B2C3D4"
     }
   ]
 });
@@ -228,16 +229,19 @@ app.get('/doses', auth, async (req, res) => {
   res.json(formatted);
 });
 
-// RFID Scan
+// RFID Scan — matches by rfidTag scanned from ESP32
 app.post('/rfid-scan', async (req, res) => {
   try {
-    const { username, medIndex } = req.body;
+    const { rfidTag } = req.body;
 
-    const user = await User.findOne({ username });
-    if (!user) return res.status(404).json({ error: 'User not found' });
+    if (!rfidTag) return res.status(400).json({ error: 'rfidTag is required' });
 
+    // Search all users for a med with this RFID tag
+    const user = await User.findOne({ 'meds.rfidTag': rfidTag });
+    if (!user) return res.status(404).json({ error: 'No medicine linked to this RFID tag' });
+
+    const medIndex = user.meds.findIndex(m => m.rfidTag === rfidTag);
     const med = user.meds[medIndex];
-    if (!med) return res.status(404).json({ error: 'Medicine not found' });
 
     const today = new Date().toISOString().split('T')[0];
 
@@ -265,7 +269,9 @@ app.post('/rfid-scan', async (req, res) => {
       success: true,
       taken: updatedDose,
       total: med.dose,
-      medicine: med.name
+      medicine: med.name,
+      patient: user.name,
+      username: user.username
     });
 
   } catch (err) {
