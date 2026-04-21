@@ -7,42 +7,22 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #f7f4ef;
-    --card: #ffffff;
-    --teal: #1a7a6e;
-    --teal-light: #e8f5f3;
-    --teal-mid: #2fa898;
-    --red: #e05252;
-    --amber: #f5a623;
-    --green: #2ecc8c;
-    --text: #1c2b29;
-    --muted: #7a9490;
-    --border: #e2ede9;
+    --bg: #f7f4ef; --card: #ffffff; --teal: #1a7a6e; --teal-light: #e8f5f3;
+    --teal-mid: #2fa898; --red: #e05252; --amber: #f5a623; --green: #2ecc8c;
+    --text: #1c2b29; --muted: #7a9490; --border: #e2ede9;
     --shadow: 0 4px 24px rgba(26,122,110,0.09);
   }
   * { margin:0; padding:0; box-sizing:border-box; }
   body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
   .hidden { display:none !important; }
-  input, select, textarea {
-    width:100%; padding:12px 14px; border:1.5px solid var(--border); border-radius:10px;
-    font-family:'DM Sans',sans-serif; font-size:15px; color:var(--text); background:#fff;
-    margin-bottom:16px; outline:none; transition:border .2s;
-  }
+  input, select, textarea { width:100%; padding:12px 14px; border:1.5px solid var(--border); border-radius:10px; font-family:'DM Sans',sans-serif; font-size:15px; color:var(--text); background:#fff; margin-bottom:16px; outline:none; transition:border .2s; }
   input:focus, select:focus { border-color:var(--teal-mid); }
   label { font-size:12px; font-weight:600; color:var(--muted); display:block; margin-bottom:5px; text-transform:uppercase; letter-spacing:.5px; }
-  .btn {
-    width:100%; padding:14px; background:var(--teal); color:#fff; border:none; border-radius:12px;
-    font-family:'DM Sans',sans-serif; font-size:16px; font-weight:600; cursor:pointer;
-    transition:background .2s, transform .1s; margin-top:4px;
-  }
+  .btn { width:100%; padding:14px; background:var(--teal); color:#fff; border:none; border-radius:12px; font-family:'DM Sans',sans-serif; font-size:16px; font-weight:600; cursor:pointer; transition:background .2s, transform .1s; margin-top:4px; }
   .btn:hover { background:var(--teal-mid); }
   .btn:active { transform:scale(.98); }
   .btn:disabled { background:#b2ceca; cursor:not-allowed; transform:none; }
-  .btn-outline {
-    background:transparent; color:var(--teal); border:2px solid var(--teal);
-    width:100%; padding:12px; border-radius:12px; font-family:'DM Sans',sans-serif;
-    font-size:15px; font-weight:600; cursor:pointer; transition:.2s; margin-top:10px; display:block; text-align:center;
-  }
+  .btn-outline { background:transparent; color:var(--teal); border:2px solid var(--teal); width:100%; padding:12px; border-radius:12px; font-family:'DM Sans',sans-serif; font-size:15px; font-weight:600; cursor:pointer; transition:.2s; margin-top:10px; display:block; text-align:center; }
   .btn-outline:hover { background:var(--teal-light); }
   .err { background:#ffeaea; color:var(--red); border-radius:8px; padding:10px 14px; font-size:13px; margin-bottom:14px; }
   .info { background:#e8f5f3; color:var(--teal); border-radius:8px; padding:10px 14px; font-size:13px; margin-bottom:14px; }
@@ -111,7 +91,7 @@
   .cal-day.taken { background:var(--green); color:#fff; }
   .cal-day.missed { background:#ffeaea; color:var(--red); font-weight:700; }
   .cal-day.future { color:var(--muted); background:#f5f5f5; }
-  .cal-day.today-ring { outline:2.5px solid var(--teal); outline-offset:1px; border-radius:8px; }
+  .cal-day.today-ring { outline:2.5px solid var(--teal); outline-offset:1px; }
   .cal-day.no-data { background:var(--border); color:var(--muted); }
   .missed-list { background:var(--card); border-radius:16px; padding:22px; box-shadow:var(--shadow); margin-bottom:24px; }
   .missed-item { display:flex; align-items:flex-start; gap:12px; padding:10px 0; border-bottom:1px solid var(--border); }
@@ -127,6 +107,9 @@
   .reset-btn:hover { background:#ffeaea; }
   .spinner { width:18px; height:18px; border:2.5px solid rgba(255,255,255,.4); border-top-color:#fff; border-radius:50%; animation:spin .7s linear infinite; display:inline-block; vertical-align:middle; margin-right:6px; }
   @keyframes spin { to { transform:rotate(360deg); } }
+  @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+  @keyframes popIn { from{opacity:0;transform:scale(.8)} to{opacity:1;transform:scale(1)} }
+  #reminderOverlay.active { display:flex !important; }
   #toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(80px); background:var(--text); color:#fff; padding:12px 22px; border-radius:30px; font-size:14px; font-weight:500; transition:transform .3s ease; z-index:999; white-space:nowrap; }
   #toast.show { transform:translateX(-50%) translateY(0); }
   @media(max-width:600px){
@@ -141,11 +124,24 @@
 </head>
 <body>
 
-<script>
-  const API = "https://medscan-wfuv.onrender.com";
-</script>
-
 <div id="toast"></div>
+
+<!-- ===== REMINDER MODAL ===== -->
+<div id="reminderOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:1000;align-items:center;justify-content:center;animation:fadeIn .3s ease">
+  <div id="reminderCard" style="background:#fff;border-radius:24px;padding:36px 32px;max-width:380px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.25);animation:popIn .35s cubic-bezier(.34,1.56,.64,1)">
+    <div style="font-size:52px;margin-bottom:12px" id="reminderEmoji">💊</div>
+    <div style="font-family:'DM Serif Display',serif;font-size:22px;color:var(--teal);margin-bottom:6px">Time for your medicine!</div>
+    <div style="font-size:18px;font-weight:700;color:var(--text);margin-bottom:4px" id="reminderMedName">—</div>
+    <div style="font-size:14px;color:var(--muted);margin-bottom:20px" id="reminderMedDose">—</div>
+    <div style="background:var(--teal-light);border-radius:14px;padding:16px;margin-bottom:22px">
+      <div style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Auto-dismiss in</div>
+      <div style="font-family:'DM Serif Display',serif;font-size:48px;color:var(--teal);line-height:1" id="reminderCountdown">60</div>
+      <div style="font-size:13px;color:var(--muted)">seconds</div>
+    </div>
+    <button class="btn" onclick="dismissReminder()" style="margin:0">✓ Got it, I'll take it now</button>
+    <button class="btn-outline" onclick="snoozeReminder()" style="margin-top:10px">⏰ Snooze 5 min</button>
+  </div>
+</div>
 
 <div id="authSection">
   <div id="loginWrap" class="auth-wrap">
@@ -251,7 +247,7 @@
   <div class="main">
     <div class="welcome-card">
       <h1 id="welcomeName">Hello!</h1>
-      <p id="welcomeSub">Hope you're doing well today. Here's your health summary 💊</p>
+      <p>Hope you're doing well today. Here's your health summary 💊</p>
       <div class="date-badge" id="todayBadge">📅 —</div>
     </div>
     <div class="stats">
@@ -307,7 +303,6 @@
 
 <script>
 const API = 'https://medscan-wfuv.onrender.com';
-
 let token = localStorage.getItem('ms_token') || null;
 let currentUser = null;
 let doseLogs = {};
@@ -317,383 +312,416 @@ let regData = {};
 
 function todayKey() {
   const d = new Date();
-  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
 }
-
 function showSection(id) {
   ['loginWrap','forgotWrap','regWrap'].forEach(s => {
     document.getElementById(s).classList.toggle('hidden', s !== id);
   });
 }
-
-function showErr(id, msg) {
-  const el = document.getElementById(id);
-  el.textContent = msg;
-  el.classList.remove('hidden');
-}
+function showErr(id, msg) { const el=document.getElementById(id); el.textContent=msg; el.classList.remove('hidden'); }
 function hideErr(id) { document.getElementById(id).classList.add('hidden'); }
-
 function showToast(msg, dur=2800) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), dur);
+  const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), dur);
 }
-
 function setLoading(btnId, loading, text='') {
-  const btn = document.getElementById(btnId);
-  if (!btn) return;
-  btn.disabled = loading;
-  btn.innerHTML = loading ? `<span class="spinner"></span> Loading…` : text;
+  const btn=document.getElementById(btnId); if(!btn) return;
+  btn.disabled=loading;
+  btn.innerHTML=loading ? '<span class="spinner"></span> Loading\u2026' : text;
 }
-
 async function apiFetch(path, method='GET', body=null) {
-  const opts = { method, headers: { 'Content-Type': 'application/json' } };
-  if (token) opts.headers['Authorization'] = 'Bearer ' + token;
-  if (body) opts.body = JSON.stringify(body);
-  const res = await fetch(API + path, opts);
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.error || 'Request failed');
+  const opts={method, headers:{'Content-Type':'application/json'}};
+  if(token) opts.headers['Authorization']='Bearer '+token;
+  if(body) opts.body=JSON.stringify(body);
+  const res=await fetch(API+path, opts);
+  const data=await res.json();
+  if(!res.ok) throw new Error(data.error||'Request failed');
   return data;
 }
-
 async function doLogin() {
   hideErr('loginErr');
-  const username = document.getElementById('loginUser').value.trim();
-  const password = document.getElementById('loginPass').value;
-  if (!username || !password) { showErr('loginErr', 'Please fill in all fields.'); return; }
-  setLoading('loginBtn', true);
+  const username=document.getElementById('loginUser').value.trim();
+  const password=document.getElementById('loginPass').value;
+  if(!username||!password){showErr('loginErr','Please fill in all fields.');return;}
+  setLoading('loginBtn',true);
   try {
-    const data = await apiFetch('/login', 'POST', { username, password });
-    token = data.token;
-    localStorage.setItem('ms_token', token);
-    currentUser = data.user;
+    const data=await apiFetch('/login','POST',{username,password});
+    token=data.token; localStorage.setItem('ms_token',token); currentUser=data.user;
     await loadApp();
-  } catch(e) {
-    showErr('loginErr', e.message);
-  } finally {
-    setLoading('loginBtn', false, 'Sign In');
-  }
+  } catch(e){ showErr('loginErr',e.message); }
+  finally { setLoading('loginBtn',false,'Sign In'); }
 }
-
 async function doForgot() {
-  const el = document.getElementById('forgotMsg');
-  el.className = 'hidden';
-  const username = document.getElementById('forgotUser').value.trim();
-  const newPassword = document.getElementById('forgotPass').value;
-  if (!username || !newPassword) { el.textContent='Fill all fields.'; el.className='err'; return; }
-  if (newPassword.length < 6) { el.textContent='Password must be at least 6 characters.'; el.className='err'; return; }
-  setLoading('forgotBtn', true);
+  const el=document.getElementById('forgotMsg'); el.className='hidden';
+  const username=document.getElementById('forgotUser').value.trim();
+  const newPassword=document.getElementById('forgotPass').value;
+  if(!username||!newPassword){el.textContent='Fill all fields.';el.className='err';return;}
+  if(newPassword.length<6){el.textContent='Password must be at least 6 characters.';el.className='err';return;}
+  setLoading('forgotBtn',true);
   try {
-    await apiFetch('/forgot', 'POST', { username, newPassword });
-    el.textContent = '✓ Password reset! You can now log in.';
-    el.className = 'info';
-  } catch(e) {
-    el.textContent = e.message;
-    el.className = 'err';
-  } finally {
-    setLoading('forgotBtn', false, 'Reset Password');
-  }
+    await apiFetch('/forgot','POST',{username,newPassword});
+    el.textContent='Password reset! You can now log in.'; el.className='info';
+  } catch(e){ el.textContent=e.message; el.className='err'; }
+  finally { setLoading('forgotBtn',false,'Reset Password'); }
 }
-
 function doLogout() {
-  token = null; currentUser = null; doseLogs = {};
+  token=null; currentUser=null; doseLogs={};
   localStorage.removeItem('ms_token');
   document.getElementById('appSection').classList.add('hidden');
   document.getElementById('authSection').classList.remove('hidden');
   showSection('loginWrap');
-  document.getElementById('loginUser').value = '';
-  document.getElementById('loginPass').value = '';
+  document.getElementById('loginUser').value='';
+  document.getElementById('loginPass').value='';
 }
-
 function regStep1() {
   hideErr('reg1err');
-  const u = document.getElementById('rUser').value.trim();
-  const p = document.getElementById('rPass').value;
-  const p2 = document.getElementById('rPass2').value;
-  if (!u || !p || !p2) { showErr('reg1err','Fill all fields.'); return; }
-  if (/\s/.test(u)) { showErr('reg1err','Username cannot have spaces.'); return; }
-  if (p.length < 6) { showErr('reg1err','Password must be at least 6 characters.'); return; }
-  if (p !== p2) { showErr('reg1err','Passwords do not match.'); return; }
-  regData = { username: u, password: p };
+  const u=document.getElementById('rUser').value.trim();
+  const p=document.getElementById('rPass').value;
+  const p2=document.getElementById('rPass2').value;
+  if(!u||!p||!p2){showErr('reg1err','Fill all fields.');return;}
+  if(/\s/.test(u)){showErr('reg1err','Username cannot have spaces.');return;}
+  if(p.length<6){showErr('reg1err','Password must be at least 6 characters.');return;}
+  if(p!==p2){showErr('reg1err','Passwords do not match.');return;}
+  regData={username:u,password:p};
   document.getElementById('sd2').classList.add('active');
   document.getElementById('regStep1').classList.remove('show');
   document.getElementById('regStep2').classList.add('show');
 }
-
 function regStep2() {
   hideErr('reg2err');
-  const name = document.getElementById('rName').value.trim();
-  const age = document.getElementById('rAge').value;
-  const phone = document.getElementById('rPhone').value.trim();
-  const guardian = document.getElementById('rGuard').value.trim();
-  const guardianPhone = document.getElementById('rGuardPhone').value.trim();
-  if (!name || !age || !phone || !guardian || !guardianPhone) { showErr('reg2err','Fill all fields.'); return; }
-  regData = { ...regData, name, age: parseInt(age), phone, guardian, guardianPhone };
+  const name=document.getElementById('rName').value.trim();
+  const age=document.getElementById('rAge').value;
+  const phone=document.getElementById('rPhone').value.trim();
+  const guardian=document.getElementById('rGuard').value.trim();
+  const guardianPhone=document.getElementById('rGuardPhone').value.trim();
+  if(!name||!age||!phone||!guardian||!guardianPhone){showErr('reg2err','Fill all fields.');return;}
+  regData={...regData,name,age:parseInt(age),phone,guardian,guardianPhone};
   document.getElementById('sd3').classList.add('active');
   document.getElementById('regStep2').classList.remove('show');
   document.getElementById('regStep3').classList.add('show');
-  if (document.getElementById('medList').children.length === 0) addMedBlock();
+  if(document.getElementById('medList').children.length===0) addMedBlock();
 }
-
 function addMedBlock() {
   medCount++;
-  const id = 'mb' + medCount;
-  const div = document.createElement('div');
-  div.className = 'med-block';
-  div.id = id;
-  div.innerHTML = `
+  const id='mb'+medCount;
+  const div=document.createElement('div');
+  div.className='med-block'; div.id=id;
+  div.innerHTML=`
     <button class="remove-med" onclick="document.getElementById('${id}').remove()" title="Remove">✕</button>
     <label>Tablet Name</label>
     <input type="text" class="med-name-inp" placeholder="e.g. Metformin 500mg">
-    <label>Pills per day</label>
+    <label>Pills per Day</label>
     <input type="number" class="med-dose-inp" min="1" max="10" value="1">
-    <label>Timing</label>
-    <div class="timing-row">
-      <span class="timing-chip" onclick="this.classList.toggle('sel')">Morning</span>
-      <span class="timing-chip" onclick="this.classList.toggle('sel')">Afternoon</span>
-      <span class="timing-chip" onclick="this.classList.toggle('sel')">Night</span>
+    <label>RFID Tag (scan or type UID)</label>
+    <input type="text" class="med-rfid-inp" placeholder="e.g. A1B2C3D4" style="font-family:monospace;letter-spacing:1px">
+    <label>Reminder Times</label>
+    <div class="timing-times" style="display:flex;flex-direction:column;gap:8px;margin-bottom:10px">
+      <div style="display:flex;align-items:center;gap:8px">
+        <input type="time" class="time-inp" style="flex:1;margin-bottom:0">
+        <button type="button" onclick="addTimeRow(this)" style="background:var(--teal);color:#fff;border:none;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:18px;line-height:1;flex-shrink:0">+</button>
+        <button type="button" onclick="removeTimeRow(this)" style="background:none;border:2px solid var(--red);color:var(--red);border-radius:8px;padding:6px 12px;cursor:pointer;font-size:18px;line-height:1;flex-shrink:0">−</button>
+      </div>
     </div>`;
   document.getElementById('medList').appendChild(div);
 }
-
+function addTimeRow(btn) {
+  const wrap=btn.closest('.timing-times');
+  const row=document.createElement('div');
+  row.style='display:flex;align-items:center;gap:8px';
+  row.innerHTML='<input type="time" class="time-inp" style="flex:1;margin-bottom:0">'
+    +'<button type="button" onclick="addTimeRow(this)" style="background:var(--teal);color:#fff;border:none;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:18px;line-height:1;flex-shrink:0">+</button>'
+    +'<button type="button" onclick="removeTimeRow(this)" style="background:none;border:2px solid var(--red);color:var(--red);border-radius:8px;padding:6px 12px;cursor:pointer;font-size:18px;line-height:1;flex-shrink:0">−</button>';
+  wrap.appendChild(row);
+}
+function removeTimeRow(btn) {
+  const wrap=btn.closest('.timing-times');
+  if(wrap.children.length<=1){showToast('At least one timing is required.');return;}
+  btn.closest('div').remove();
+}
 async function doRegister() {
   hideErr('reg3err');
-  const blocks = document.querySelectorAll('#medList .med-block');
-  if (blocks.length === 0) { showErr('reg3err','Add at least one tablet.'); return; }
-  const meds = []; let valid = true;
-  blocks.forEach(b => {
-    const name = b.querySelector('.med-name-inp').value.trim();
-    const dose = parseInt(b.querySelector('.med-dose-inp').value) || 1;
-    const timings = [...b.querySelectorAll('.timing-chip.sel')].map(c => c.textContent);
-    if (!name) { valid = false; return; }
-    meds.push({ name, dose, timings: timings.length ? timings : ['Morning'] });
+  const blocks=document.querySelectorAll('#medList .med-block');
+  if(blocks.length===0){showErr('reg3err','Add at least one tablet.');return;}
+  const meds=[]; let valid=true;
+  blocks.forEach(b=>{
+    const name=b.querySelector('.med-name-inp').value.trim();
+    const dose=parseInt(b.querySelector('.med-dose-inp').value)||1;
+    const rfidTag=b.querySelector('.med-rfid-inp').value.trim().toUpperCase();
+    const times=[...b.querySelectorAll('.time-inp')].map(t=>t.value).filter(t=>t);
+    if(!name){valid=false;return;}
+    meds.push({name,dose,timings:times.length?times:['08:00'],rfidTag:rfidTag||''});
   });
-  if (!valid) { showErr('reg3err','Please fill in all tablet names.'); return; }
-  regData.meds = meds;
-  setLoading('regSubmitBtn', true);
+  if(!valid){showErr('reg3err','Please fill in all tablet names.');return;}
+  regData.meds=meds;
+  setLoading('regSubmitBtn',true);
   try {
-    const data = await apiFetch('/register', 'POST', regData);
-    token = data.token;
-    localStorage.setItem('ms_token', token);
-    currentUser = data.user;
-    medCount = 0; regData = {};
-    document.getElementById('medList').innerHTML = '';
-    ['regStep1','regStep2','regStep3'].forEach((s,i) => {
-      document.getElementById(s).className = 'reg-step' + (i===0?' show':'');
+    const data=await apiFetch('/register','POST',regData);
+    token=data.token; localStorage.setItem('ms_token',token); currentUser=data.user;
+    medCount=0; regData={};
+    document.getElementById('medList').innerHTML='';
+    ['regStep1','regStep2','regStep3'].forEach((s,i)=>{
+      document.getElementById(s).className='reg-step'+(i===0?' show':'');
     });
-    ['sd1','sd2','sd3'].forEach((s,i) => {
-      document.getElementById(s).classList.toggle('active', i===0);
+    ['sd1','sd2','sd3'].forEach((s,i)=>{
+      document.getElementById(s).classList.toggle('active',i===0);
     });
     await loadApp();
-  } catch(e) {
-    showErr('reg3err', e.message);
-  } finally {
-    setLoading('regSubmitBtn', false, 'Create Account ✓');
-  }
+  } catch(e){ showErr('reg3err',e.message); }
+  finally { setLoading('regSubmitBtn',false,'Create Account ✓'); }
 }
-
 async function loadApp() {
   document.getElementById('authSection').classList.add('hidden');
   document.getElementById('appSection').classList.remove('hidden');
-  const firstName = currentUser.name.split(' ')[0];
-  document.getElementById('welcomeName').textContent = `Hello, ${firstName}! 👋`;
-  document.getElementById('avatarEl').textContent = currentUser.name[0].toUpperCase();
-  const now = new Date();
-  document.getElementById('todayBadge').textContent =
-    '📅 ' + now.toLocaleDateString('en-IN', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
-  calYear = now.getFullYear();
-  calMonth = now.getMonth();
-  try { doseLogs = await apiFetch('/doses'); } catch(e) { doseLogs = {}; }
+  const firstName=currentUser.name.split(' ')[0];
+  document.getElementById('welcomeName').textContent='Hello, '+firstName+'! 👋';
+  document.getElementById('avatarEl').textContent=currentUser.name[0].toUpperCase();
+  const now=new Date();
+  document.getElementById('todayBadge').textContent='📅 '+now.toLocaleDateString('en-IN',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  calYear=now.getFullYear(); calMonth=now.getMonth();
+  try { doseLogs=await apiFetch('/doses'); } catch(e){ doseLogs={}; }
   renderAll();
+  startReminderEngine();
 }
-
-function renderAll() {
-  renderMeds(); renderStats(); renderCalendar(); renderMissed(); renderDiscipline();
-}
-
+function renderAll(){ renderMeds(); renderStats(); renderCalendar(); renderMissed(); renderDiscipline(); }
 function renderMeds() {
-  const grid = document.getElementById('medGrid');
-  grid.innerHTML = '';
-  const tk = todayKey();
-  const todayLog = doseLogs[tk] || {};
-  currentUser.meds.forEach((med, mi) => {
-    const taken = todayLog[mi] !== undefined ? todayLog[mi] : 0;
-    const pct = Math.round((taken / med.dose) * 100);
-    const pillsHTML = Array.from({ length: med.dose }, (_, pi) => {
-      const isTaken = pi < taken;
-      return `<div class="pill ${isTaken ? 'taken' : ''}" onclick="togglePill(${mi},${pi})">${isTaken ? '✓' : ''}</div>`;
+  const grid=document.getElementById('medGrid'); grid.innerHTML='';
+  const tk=todayKey(); const todayLog=doseLogs[tk]||{};
+  currentUser.meds.forEach((med,mi)=>{
+    const taken=todayLog[mi]!==undefined?todayLog[mi]:0;
+    const pct=Math.round((taken/med.dose)*100);
+    const pillsHTML=Array.from({length:med.dose},(_,pi)=>{
+      const isTaken=pi<taken;
+      return '<div class="pill '+(isTaken?'taken':'')+'" onclick="togglePill('+mi+','+pi+')">'+(isTaken?'✓':'')+'</div>';
     }).join('');
-    const card = document.createElement('div');
-    card.className = 'med-card';
-    card.innerHTML = `
-      <div class="med-name">${med.name}</div>
-      <div class="med-timing-tag">⏰ ${med.timings.join(' · ')}</div>
-      <div class="pill-row">${pillsHTML}</div>
-      <div class="pill-count">${taken} / ${med.dose} taken today</div>
-      <div class="med-progress"><div class="med-progress-fill" style="width:${pct}%"></div></div>`;
+    const card=document.createElement('div'); card.className='med-card';
+    card.innerHTML='<div class="med-name">'+med.name+'</div>'
+      +'<div class="med-timing-tag">⏰ '+(med.timings&&med.timings.length?med.timings.join(' · '):'No timings set')+'</div>'
+      +'<div class="pill-row">'+pillsHTML+'</div>'
+      +'<div class="pill-count">'+taken+' / '+med.dose+' taken today</div>'
+      +'<div class="med-progress"><div class="med-progress-fill" style="width:'+pct+'%"></div></div>';
     grid.appendChild(card);
   });
 }
-
-async function togglePill(mi, pi) {
-  const tk = todayKey();
-  if (!doseLogs[tk]) doseLogs[tk] = {};
-  const cur = doseLogs[tk][mi] || 0;
-  const med = currentUser.meds[mi];
+async function togglePill(mi,pi) {
+  const tk=todayKey();
+  if(!doseLogs[tk]) doseLogs[tk]={};
+  const cur=doseLogs[tk][mi]||0;
+  const med=currentUser.meds[mi];
   let newTaken;
-  if (pi < cur) newTaken = pi;
-  else if (cur < med.dose) newTaken = cur + 1;
+  if(pi<cur) newTaken=pi;
+  else if(cur<med.dose) newTaken=cur+1;
   else return;
-  doseLogs[tk][mi] = newTaken;
+  doseLogs[tk][mi]=newTaken;
   renderAll();
-  try {
-    await apiFetch('/dose', 'POST', { date: tk, medIndex: mi, taken: newTaken });
-  } catch(e) {
-    showToast('⚠ Could not save to server. Check connection.');
-  }
+  try { await apiFetch('/dose','POST',{date:tk,medIndex:mi,taken:newTaken}); }
+  catch(e){ showToast('Could not save to server. Check connection.'); }
 }
-
 function renderStats() {
-  const now = new Date();
-  const tk = todayKey();
-  const todayLog = doseLogs[tk] || {};
-  let totalDose = 0, takenToday = 0;
-  currentUser.meds.forEach((m, mi) => { totalDose += m.dose; takenToday += todayLog[mi] || 0; });
-  document.getElementById('statToday').textContent = `${takenToday}/${totalDose}`;
-  let fullDays = 0, countedDays = 0;
-  for (let d = 1; d <= now.getDate(); d++) {
-    const k = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    const dl = doseLogs[k] || {};
-    const total = currentUser.meds.reduce((s, m) => s + m.dose, 0);
-    const taken = currentUser.meds.reduce((s, m, mi) => s + (dl[mi] || 0), 0);
-    if (total > 0) { countedDays++; if (taken >= total) fullDays++; }
+  const now=new Date(); const tk=todayKey(); const todayLog=doseLogs[tk]||{};
+  let totalDose=0,takenToday=0;
+  currentUser.meds.forEach((m,mi)=>{totalDose+=m.dose;takenToday+=todayLog[mi]||0;});
+  document.getElementById('statToday').textContent=takenToday+'/'+totalDose;
+  let fullDays=0,countedDays=0;
+  for(let d=1;d<=now.getDate();d++){
+    const k=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+    const dl=doseLogs[k]||{};
+    const total=currentUser.meds.reduce((s,m)=>s+m.dose,0);
+    const taken=currentUser.meds.reduce((s,m,mi)=>s+(dl[mi]||0),0);
+    if(total>0){countedDays++;if(taken>=total)fullDays++;}
   }
-  document.getElementById('statMonth').textContent = (countedDays > 0 ? Math.round((fullDays/countedDays)*100) : 0) + '%';
-  let streak = 0;
-  for (let i = 0; i < 365; i++) {
-    const d = new Date(now); d.setDate(now.getDate() - i);
-    const k = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-    const dl = doseLogs[k] || {};
-    const total = currentUser.meds.reduce((s, m) => s + m.dose, 0);
-    const taken = currentUser.meds.reduce((s, m, mi) => s + (dl[mi] || 0), 0);
-    if (total > 0 && taken >= total) streak++;
-    else if (i > 0) break;
+  document.getElementById('statMonth').textContent=(countedDays>0?Math.round((fullDays/countedDays)*100):0)+'%';
+  let streak=0;
+  for(let i=0;i<365;i++){
+    const d=new Date(now); d.setDate(now.getDate()-i);
+    const k=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+    const dl=doseLogs[k]||{};
+    const total=currentUser.meds.reduce((s,m)=>s+m.dose,0);
+    const taken=currentUser.meds.reduce((s,m,mi)=>s+(dl[mi]||0),0);
+    if(total>0&&taken>=total) streak++;
+    else if(i>0) break;
   }
-  document.getElementById('statStreak').textContent = streak;
+  document.getElementById('statStreak').textContent=streak;
 }
-
-function calNav(dir) {
-  calMonth += dir;
-  if (calMonth > 11) { calMonth = 0; calYear++; }
-  if (calMonth < 0) { calMonth = 11; calYear--; }
+function calNav(dir){
+  calMonth+=dir;
+  if(calMonth>11){calMonth=0;calYear++;}
+  if(calMonth<0){calMonth=11;calYear--;}
   renderCalendar();
 }
-
-function renderCalendar() {
-  const now = new Date();
-  document.getElementById('calMonthLabel').textContent =
-    new Date(calYear, calMonth, 1).toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });
-  const grid = document.getElementById('calGrid');
-  grid.innerHTML = '';
-  ['Su','Mo','Tu','We','Th','Fr','Sa'].forEach(d => {
-    const el = document.createElement('div'); el.className = 'cal-day-label'; el.textContent = d; grid.appendChild(el);
+function renderCalendar(){
+  const now=new Date();
+  document.getElementById('calMonthLabel').textContent=new Date(calYear,calMonth,1).toLocaleDateString('en-IN',{month:'long',year:'numeric'});
+  const grid=document.getElementById('calGrid'); grid.innerHTML='';
+  ['Su','Mo','Tu','We','Th','Fr','Sa'].forEach(d=>{
+    const el=document.createElement('div'); el.className='cal-day-label'; el.textContent=d; grid.appendChild(el);
   });
-  const firstDay = new Date(calYear, calMonth, 1).getDay();
-  const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
-  for (let i = 0; i < firstDay; i++) {
-    const el = document.createElement('div'); el.className = 'cal-day empty'; grid.appendChild(el);
-  }
-  for (let d = 1; d <= daysInMonth; d++) {
-    const k = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    const el = document.createElement('div'); el.textContent = d;
-    const isFuture = new Date(calYear, calMonth, d) > now;
-    const isToday = calYear === now.getFullYear() && calMonth === now.getMonth() && d === now.getDate();
-    if (isFuture) { el.className = 'cal-day future'; }
-    else {
-      const dl = doseLogs[k] || {};
-      const total = currentUser.meds.reduce((s, m) => s + m.dose, 0);
-      const taken = currentUser.meds.reduce((s, m, mi) => s + (dl[mi] || 0), 0);
-      if (total === 0) el.className = 'cal-day no-data';
-      else if (taken >= total) el.className = 'cal-day taken';
-      else el.className = 'cal-day missed';
+  const firstDay=new Date(calYear,calMonth,1).getDay();
+  const daysInMonth=new Date(calYear,calMonth+1,0).getDate();
+  for(let i=0;i<firstDay;i++){const el=document.createElement('div');el.className='cal-day empty';grid.appendChild(el);}
+  for(let d=1;d<=daysInMonth;d++){
+    const k=calYear+'-'+String(calMonth+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+    const el=document.createElement('div'); el.textContent=d;
+    const isFuture=new Date(calYear,calMonth,d)>now;
+    const isToday=calYear===now.getFullYear()&&calMonth===now.getMonth()&&d===now.getDate();
+    if(isFuture){el.className='cal-day future';}
+    else{
+      const dl=doseLogs[k]||{};
+      const total=currentUser.meds.reduce((s,m)=>s+m.dose,0);
+      const taken=currentUser.meds.reduce((s,m,mi)=>s+(dl[mi]||0),0);
+      if(total===0) el.className='cal-day no-data';
+      else if(taken>=total) el.className='cal-day taken';
+      else el.className='cal-day missed';
     }
-    if (isToday) el.classList.add('today-ring');
+    if(isToday) el.classList.add('today-ring');
     grid.appendChild(el);
   }
 }
-
-function renderMissed() {
-  const now = new Date();
-  const missed = [];
-  for (let d = 1; d <= now.getDate(); d++) {
-    const k = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    const dl = doseLogs[k] || {};
-    const date = new Date(now.getFullYear(), now.getMonth(), d)
-      .toLocaleDateString('en-IN', { day: 'numeric', month: 'short', weekday: 'short' });
-    currentUser.meds.forEach((m, mi) => {
-      const taken = dl[mi] || 0;
-      if (taken < m.dose) missed.push({ date, med: m.name, taken, total: m.dose });
+function renderMissed(){
+  const now=new Date(); const missed=[];
+  for(let d=1;d<=now.getDate();d++){
+    const k=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+    const dl=doseLogs[k]||{};
+    const date=new Date(now.getFullYear(),now.getMonth(),d).toLocaleDateString('en-IN',{day:'numeric',month:'short',weekday:'short'});
+    currentUser.meds.forEach((m,mi)=>{
+      const taken=dl[mi]||0;
+      if(taken<m.dose) missed.push({date,med:m.name,taken,total:m.dose});
     });
   }
-  const el = document.getElementById('missedList');
-  if (missed.length === 0) { el.innerHTML = '<p style="color:var(--muted);font-size:14px">No missed doses this month 🎉</p>'; return; }
-  el.innerHTML = missed.slice(-10).reverse().map(m => `
-    <div class="missed-item">
-      <div class="missed-dot"></div>
-      <div>
-        <div class="missed-text">${m.med} — ${m.taken}/${m.total} pills taken</div>
-        <div class="missed-date">${m.date}</div>
-      </div>
-    </div>`).join('');
+  const el=document.getElementById('missedList');
+  if(missed.length===0){el.innerHTML='<p style="color:var(--muted);font-size:14px">No missed doses this month 🎉</p>';return;}
+  el.innerHTML=missed.slice(-10).reverse().map(m=>
+    '<div class="missed-item"><div class="missed-dot"></div><div>'
+    +'<div class="missed-text">'+m.med+' — '+m.taken+'/'+m.total+' pills taken</div>'
+    +'<div class="missed-date">'+m.date+'</div></div></div>'
+  ).join('');
 }
-
-function renderDiscipline() {
-  const now = new Date();
-  let fullDays = 0, totalDays = 0;
-  for (let d = 1; d <= now.getDate(); d++) {
-    const k = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    const dl = doseLogs[k] || {};
-    const total = currentUser.meds.reduce((s, m) => s + m.dose, 0);
-    const taken = currentUser.meds.reduce((s, m, mi) => s + (dl[mi] || 0), 0);
-    if (total > 0) { totalDays++; if (taken >= total) fullDays++; }
+function renderDiscipline(){
+  const now=new Date(); let fullDays=0,totalDays=0;
+  for(let d=1;d<=now.getDate();d++){
+    const k=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+    const dl=doseLogs[k]||{};
+    const total=currentUser.meds.reduce((s,m)=>s+m.dose,0);
+    const taken=currentUser.meds.reduce((s,m,mi)=>s+(dl[mi]||0),0);
+    if(total>0){totalDays++;if(taken>=total)fullDays++;}
   }
-  const pct = totalDays > 0 ? Math.round((fullDays / totalDays) * 100) : 0;
-  const bar = document.getElementById('discBar');
-  bar.style.width = pct + '%';
-  bar.style.background = pct >= 80 ? 'var(--green)' : pct >= 50 ? 'var(--amber)' : 'var(--red)';
-  document.getElementById('discPct').textContent = pct + '%';
-  let fb = '', emoji = '';
-  if (totalDays === 0) { emoji = '💊'; fb = 'No data yet for this month. Start marking your doses today!'; }
-  else if (pct === 100) { emoji = '🏆'; fb = "Perfect score! You haven't missed a single dose this month. Outstanding — your body thanks you!"; }
-  else if (pct >= 80) { emoji = '🌟'; fb = "Excellent work! You're consistently taking your medication. Keep it up — great habit forming!"; }
-  else if (pct >= 60) { emoji = '👍'; fb = "Good consistency! You're on the right track. Try to fill the gaps — one more streak day makes a big difference."; }
-  else if (pct >= 40) { emoji = '⚠️'; fb = "Moderate adherence. Missing doses can reduce your treatment's effectiveness. Set phone reminders to stay on track."; }
-  else { emoji = '🚨'; fb = "Low adherence this month. Skipping medication regularly can be risky. Please consult your guardian or doctor and try to stay consistent."; }
-  document.getElementById('discFeedback').textContent = emoji + ' ' + fb;
+  const pct=totalDays>0?Math.round((fullDays/totalDays)*100):0;
+  const bar=document.getElementById('discBar');
+  bar.style.width=pct+'%';
+  bar.style.background=pct>=80?'var(--green)':pct>=50?'var(--amber)':'var(--red)';
+  document.getElementById('discPct').textContent=pct+'%';
+  let fb='',emoji='';
+  if(totalDays===0){emoji='💊';fb='No data yet for this month. Start marking your doses today!';}
+  else if(pct===100){emoji='🏆';fb="Perfect score! You haven't missed a single dose this month. Outstanding!";}
+  else if(pct>=80){emoji='🌟';fb="Excellent work! You're consistently taking your medication. Keep it up!";}
+  else if(pct>=60){emoji='👍';fb="Good consistency! Try to fill the gaps — one more streak day makes a big difference.";}
+  else if(pct>=40){emoji='⚠️';fb="Moderate adherence. Set phone reminders to stay on track.";}
+  else{emoji='🚨';fb="Low adherence this month. Please consult your guardian or doctor.";}
+  document.getElementById('discFeedback').textContent=emoji+' '+fb;
 }
-
-async function confirmReset() {
-  if (!confirm('Reset ALL your dose records? This cannot be undone.')) return;
-  doseLogs = {};
-  renderAll();
-  showToast('Resetting data…');
-  const today = todayKey();
-  currentUser.meds.forEach(async (m, mi) => {
-    try { await apiFetch('/dose', 'POST', { date: today, medIndex: mi, taken: 0 }); } catch(e) {}
+async function confirmReset(){
+  if(!confirm('Reset ALL your dose records? This cannot be undone.')) return;
+  doseLogs={}; renderAll(); showToast('Resetting data…');
+  const today=todayKey();
+  currentUser.meds.forEach(async(m,mi)=>{
+    try{await apiFetch('/dose','POST',{date:today,medIndex:mi,taken:0});}catch(e){}
   });
-  showToast('✓ All dose data has been reset.');
+  showToast('All dose data has been reset.');
+}
+// ================== REMINDER ENGINE ==================
+let reminderInterval = null;
+let countdownInterval = null;
+let reminderCountdownSec = 60;
+let snoozedUntil = {}; // key: "medIndex_HH:MM" -> snooze expiry timestamp
+let firedToday = new Set(); // key: "medIndex_HH:MM_YYYY-MM-DD" to avoid re-firing
+
+function startReminderEngine() {
+  if (reminderInterval) clearInterval(reminderInterval);
+  reminderInterval = setInterval(checkReminders, 15000); // check every 15s
+  checkReminders(); // also run immediately on load
 }
 
-(async function init() {
-  if (!token) return;
-  try {
-    currentUser = await apiFetch('/profile');
-    await loadApp();
-  } catch(e) {
-    localStorage.removeItem('ms_token');
-    token = null;
+function checkReminders() {
+  if (!currentUser || !currentUser.meds) return;
+  const now = new Date();
+  const hhmm = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+  const today = todayKey();
+
+  currentUser.meds.forEach((med, mi) => {
+    if (!med.timings) return;
+    med.timings.forEach(t => {
+      const fireKey = mi + '_' + t + '_' + today;
+      const snoozeKey = mi + '_' + t;
+      if (firedToday.has(fireKey)) return;
+      if (snoozedUntil[snoozeKey] && Date.now() < snoozedUntil[snoozeKey]) return;
+      if (t === hhmm) {
+        firedToday.add(fireKey);
+        showReminderModal(med, mi, t);
+      }
+    });
+  });
+}
+
+let activeReminderMed = null;
+let activeReminderIdx = null;
+let activeReminderTime = null;
+
+function showReminderModal(med, mi, time) {
+  activeReminderMed = med;
+  activeReminderIdx = mi;
+  activeReminderTime = time;
+  document.getElementById('reminderMedName').textContent = med.name;
+  document.getElementById('reminderMedDose').textContent = med.dose + ' pill' + (med.dose > 1 ? 's' : '') + ' · Scheduled ' + time;
+  reminderCountdownSec = 60;
+  document.getElementById('reminderCountdown').textContent = reminderCountdownSec;
+  document.getElementById('reminderOverlay').classList.add('active');
+
+  if (countdownInterval) clearInterval(countdownInterval);
+  countdownInterval = setInterval(() => {
+    reminderCountdownSec--;
+    document.getElementById('reminderCountdown').textContent = reminderCountdownSec;
+    if (reminderCountdownSec <= 0) {
+      clearInterval(countdownInterval);
+      document.getElementById('reminderOverlay').classList.remove('active');
+    }
+  }, 1000);
+
+  // Try browser notification too
+  if (Notification.permission === 'granted') {
+    new Notification('💊 MedScan Reminder', {
+      body: 'Time to take ' + med.name + ' (' + med.dose + ' pill' + (med.dose > 1 ? 's' : '') + ')',
+      icon: ''
+    });
   }
+}
+
+function dismissReminder() {
+  clearInterval(countdownInterval);
+  document.getElementById('reminderOverlay').classList.remove('active');
+  showToast('✅ Reminder dismissed. Don\'t forget your ' + (activeReminderMed ? activeReminderMed.name : 'medicine') + '!');
+}
+
+function snoozeReminder() {
+  clearInterval(countdownInterval);
+  document.getElementById('reminderOverlay').classList.remove('active');
+  if (activeReminderIdx !== null && activeReminderTime) {
+    const key = activeReminderIdx + '_' + activeReminderTime;
+    snoozedUntil[key] = Date.now() + 5 * 60 * 1000;
+    // Remove from firedToday so it can fire again after snooze
+    const today = todayKey();
+    firedToday.delete(activeReminderIdx + '_' + activeReminderTime + '_' + today);
+  }
+  showToast('⏰ Snoozed for 5 minutes');
+}
+
+// Request notification permission on load
+if ('Notification' in window && Notification.permission === 'default') {
+  Notification.requestPermission();
+}
+(async function init(){
+  if(!token) return;
+  try{ currentUser=await apiFetch('/profile'); await loadApp(); }
+  catch(e){ localStorage.removeItem('ms_token'); token=null; }
 })();
 </script>
 </body>
