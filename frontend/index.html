@@ -74,6 +74,9 @@
   .med-card { background:var(--card); border-radius:16px; padding:18px; box-shadow:var(--shadow); }
   .med-name { font-weight:700; font-size:15px; margin-bottom:4px; }
   .med-timing-tag { font-size:12px; color:var(--muted); margin-bottom:12px; }
+  .med-compartment-tag { font-size:12px; font-weight:600; color:var(--teal); background:var(--teal-light); padding:2px 8px; border-radius:8px; margin-left:6px; }
+  .scan-flash { animation: scanFlash 1.4s ease; }
+  @keyframes scanFlash { 0%{box-shadow:0 0 0 0 rgba(0,180,160,0.6);} 50%{box-shadow:0 0 0 8px rgba(0,180,160,0.25);} 100%{box-shadow:0 0 0 0 rgba(0,180,160,0);} }
   .pill-row { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px; }
   .pill { width:30px; height:30px; border-radius:50%; border:2px solid var(--border); background:#fff; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:all .15s; font-size:13px; user-select:none; }
   .pill.taken { background:var(--green); border-color:var(--green); color:#fff; }
@@ -368,6 +371,8 @@ async function doForgot() {
 function doLogout() {
   token=null; currentUser=null; doseLogs={};
   localStorage.removeItem('ms_token');
+  stopScanPolling();
+  if (reminderInterval) { clearInterval(reminderInterval); reminderInterval=null; }
   document.getElementById('appSection').classList.add('hidden');
   document.getElementById('authSection').classList.remove('hidden');
   showSection('loginWrap');
@@ -411,6 +416,8 @@ function addMedBlock() {
     <button class="remove-med" onclick="document.getElementById('${id}').remove()" title="Remove">✕</button>
     <label>Tablet Name</label>
     <input type="text" class="med-name-inp" placeholder="e.g. Metformin 500mg">
+    <label>Compartment Number</label>
+    <input type="number" class="med-compartment-inp" min="1" max="20" placeholder="e.g. 1">
     <label>Pills per Day</label>
     <input type="number" class="med-dose-inp" min="1" max="10" value="1">
     <label>RFID Tag (scan or type UID)</label>
@@ -446,11 +453,13 @@ async function doRegister() {
   const meds=[]; let valid=true;
   blocks.forEach(b=>{
     const name=b.querySelector('.med-name-inp').value.trim();
+    const compartmentRaw=b.querySelector('.med-compartment-inp').value.trim();
+    const compartment=compartmentRaw?parseInt(compartmentRaw):null;
     const dose=parseInt(b.querySelector('.med-dose-inp').value)||1;
     const rfidTag=b.querySelector('.med-rfid-inp').value.trim().toUpperCase();
     const times=[...b.querySelectorAll('.time-inp')].map(t=>t.value).filter(t=>t);
     if(!name){valid=false;return;}
-    meds.push({name,dose,timings:times.length?times:['08:00'],rfidTag:rfidTag||''});
+    meds.push({name,compartment,dose,timings:times.length?times:['08:00'],rfidTag:rfidTag||''});
   });
   if(!valid){showErr('reg3err','Please fill in all tablet names.');return;}
   regData.meds=meds;
@@ -482,6 +491,7 @@ async function loadApp() {
   try { doseLogs=await apiFetch('/doses'); } catch(e){ doseLogs={}; }
   renderAll();
   startReminderEngine();
+  startScanPolling();
 }
 function renderAll(){ renderMeds(); renderStats(); renderCalendar(); renderMissed(); renderDiscipline(); }
 function renderMeds() {
@@ -494,8 +504,8 @@ function renderMeds() {
       const isTaken=pi<taken;
       return '<div class="pill '+(isTaken?'taken':'')+'" onclick="togglePill('+mi+','+pi+')">'+(isTaken?'✓':'')+'</div>';
     }).join('');
-    const card=document.createElement('div'); card.className='med-card';
-    card.innerHTML='<div class="med-name">'+med.name+'</div>'
+    const card=document.createElement('div'); card.className='med-card'; card.id='medcard-'+mi;
+    card.innerHTML='<div class="med-name">'+med.name+(med.compartment?' <span class="med-compartment-tag">📦 Compartment '+med.compartment+'</span>':'')+'</div>'
       +'<div class="med-timing-tag">⏰ '+(med.timings&&med.timings.length?med.timings.join(' · '):'No timings set')+'</div>'
       +'<div class="pill-row">'+pillsHTML+'</div>'
       +'<div class="pill-count">'+taken+' / '+med.dose+' taken today</div>'
@@ -639,6 +649,52 @@ function startReminderEngine() {
   if (reminderInterval) clearInterval(reminderInterval);
   reminderInterval = setInterval(checkReminders, 15000); // check every 15s
   checkReminders(); // also run immediately on load
+}
+
+// ================== LIVE RFID SCAN POLLING ==================
+// Polls the server every few seconds so a dose taken via the physical
+// RFID scanner shows up on the dashboard without a manual refresh.
+let scanPollInterval = null;
+let lastSeenScanAt = 0;
+
+function startScanPolling() {
+  if (scanPollInterval) clearInterval(scanPollInterval);
+  scanPollInterval = setInterval(checkLastScan, 4000); // poll every 4s
+  checkLastScan(); // also check immediately
+}
+
+async function checkLastScan() {
+  if (!currentUser) return;
+  try {
+    const data = await apiFetch('/last-scan');
+    const scan = data.scan;
+    if (!scan) return;
+    if (scan.at <= lastSeenScanAt) return; // already shown this one
+
+    lastSeenScanAt = scan.at;
+
+    const today = todayKey();
+    if (scan.date === today) {
+      if (!doseLogs[today]) doseLogs[today] = {};
+      doseLogs[today][scan.medIndex] = scan.taken;
+      renderAll();
+    }
+
+    const compartmentText = scan.compartment ? (' (Compartment ' + scan.compartment + ')') : '';
+    showToast('✅ ' + scan.medName + compartmentText + ' scanned — ' + scan.taken + '/' + scan.total + ' taken today');
+
+    const card = document.getElementById('medcard-' + scan.medIndex);
+    if (card) {
+      card.classList.add('scan-flash');
+      setTimeout(() => card.classList.remove('scan-flash'), 1400);
+    }
+  } catch (e) {
+    // Stay quiet on transient poll failures so it doesn't spam toasts
+  }
+}
+
+function stopScanPolling() {
+  if (scanPollInterval) { clearInterval(scanPollInterval); scanPollInterval = null; }
 }
 
 function checkReminders() {

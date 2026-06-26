@@ -40,6 +40,7 @@ const userSchema = new mongoose.Schema({
   meds: [
     {
       name: String,
+      compartment: Number, // compartment/slot number in the dispenser box, e.g. 1, 2, 3
       dose: Number,
       timings: [String],   // exact times like "08:00", "14:00", "21:00"
       rfidTag: String      // RFID UID string from ESP32, e.g. "A1B2C3D4"
@@ -58,6 +59,11 @@ const logSchema = new mongoose.Schema({
 });
 
 const DoseLog = mongoose.model('DoseLog', logSchema);
+
+// ================== LIVE SCAN TRACKER (for frontend polling) ==================
+// Keeps the most recent scan per user in memory so the dashboard can poll
+// '/last-scan' every few seconds and detect a brand-new scan without sockets.
+const lastScanByUser = {}; // { userId: { medIndex, medName, compartment, taken, total, at } }
 
 // ================== AUTH MIDDLEWARE ==================
 const auth = (req, res, next) => {
@@ -92,6 +98,11 @@ app.post('/register', async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    const normalizedMeds = (meds || []).map(m => ({
+      ...m,
+      compartment: m.compartment !== undefined && m.compartment !== '' ? Number(m.compartment) : null
+    }));
+
     const user = await User.create({
       username,
       password: hashedPassword,
@@ -100,7 +111,7 @@ app.post('/register', async (req, res) => {
       phone,
       guardian,
       guardianPhone,
-      meds
+      meds: normalizedMeds
     });
 
     const token = jwt.sign(
@@ -270,13 +281,39 @@ app.post('/rfid-scan', async (req, res) => {
       taken: updatedDose,
       total: med.dose,
       medicine: med.name,
+      compartment: med.compartment ?? null,
       patient: user.name,
       username: user.username
     });
 
+    // Remember this as the latest scan for this user (for dashboard polling)
+    lastScanByUser[user._id.toString()] = {
+      medIndex,
+      medName: med.name,
+      compartment: med.compartment ?? null,
+      taken: updatedDose,
+      total: med.dose,
+      date: today,
+      at: Date.now()
+    };
+
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
+});
+
+// Last Scan — frontend polls this every few seconds to detect a fresh RFID scan
+// without needing WebSockets. Returns null if there's no scan or it's stale.
+app.get('/last-scan', auth, (req, res) => {
+  const scan = lastScanByUser[req.user.id];
+  if (!scan) return res.json({ scan: null });
+
+  // Consider scans older than 2 minutes as stale so old scans don't keep "popping up"
+  if (Date.now() - scan.at > 2 * 60 * 1000) {
+    return res.json({ scan: null });
+  }
+
+  res.json({ scan });
 });
 
 // ================== START SERVER ==================
